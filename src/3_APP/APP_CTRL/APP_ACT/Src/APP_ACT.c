@@ -50,15 +50,10 @@
 /* CAUTION : Automatic generated code section for Variable: Start */
 /**< Variable for Actuators Drivers State*/
 t_eAPPACT_ActuatorState g_actState_ae[APPACT_ACTUATOR_NB] = {
-    APPACT_ACTUATOR_STATE_ENABLE, // APPACT_ACTUATOR_MTR_X_L
-    APPACT_ACTUATOR_STATE_ENABLE, // APPACT_ACTUATOR_MTR_X_R
-    APPACT_ACTUATOR_STATE_ENABLE, // APPACT_ACTUATOR_MTR_Y
-    APPACT_ACTUATOR_STATE_ENABLE, // APPACT_ACTUATOR_MTR_Z
 };
 
 /**< Variable for Actuators Drivers State*/
 t_eAPPACT_DriverState g_ActDrvState_ae[APPACT_DRIVER_NB] = {
-        APPACT_DRIVER_STATE_ENABLE, // APPACT_DRIVER_CL42T
 };
 
 /* CAUTION : Automatic generated code section for Variable: End */

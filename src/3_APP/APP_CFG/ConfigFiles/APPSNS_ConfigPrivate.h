@@ -19,16 +19,7 @@
     // *                      Includes
     // ********************************************************************
     #include "./APPSNS_ConfigPublic.h"
-    #include "../ConfigSpecific/AppSns_ConfigSpecific/APPSNS_SPEC.h"
     /* CAUTION : Automatic generated code section for Include: Start */
-    #include "APP_CFG/ConfigSpecific/AppSns_ConfigSpecific/APPSNS_SPEC_Lim_Swch_X_L_Min.h"
-    #include "APP_CFG/ConfigSpecific/AppSns_ConfigSpecific/APPSNS_SPEC_Lim_Swch_X_L_Max.h"
-    #include "APP_CFG/ConfigSpecific/AppSns_ConfigSpecific/APPSNS_SPEC_Lim_Swch_X_R_Min.h"
-    #include "APP_CFG/ConfigSpecific/AppSns_ConfigSpecific/APPSNS_SPEC_Lim_Swch_X_R_Max.h"
-    #include "APP_CFG/ConfigSpecific/AppSns_ConfigSpecific/APPSNS_SPEC_Lim_Swch_Y_Min.h"
-    #include "APP_CFG/ConfigSpecific/AppSns_ConfigSpecific/APPSNS_SPEC_Lim_Swch_Y_Max.h"
-    #include "APP_CFG/ConfigSpecific/AppSns_ConfigSpecific/APPSNS_SPEC_Lim_Swch_Z_Min.h"
-    #include "APP_CFG/ConfigSpecific/AppSns_ConfigSpecific/APPSNS_SPEC_Lim_Swch_Z_Max.h"
     /* CAUTION : Automatic generated code section for Include: End */
     // ********************************************************************
     // *                      Defines
@@ -124,26 +115,10 @@
 
     /**< Variable for System Sensors functions*/
     const t_sAPPSNS_SysSnsFunc c_AppSns_SysSns_apf[APPSNS_SENSOR_NB] = {
-        {APPSNS_MEASTYPE_RAW,                                         APPSNS_SPEC_Lim_Swch_X_L_Min_SetCfg,                        APPSNS_SPEC_Lim_Swch_X_L_Min_GetSigValue,                      APPSNS_SPEC_Lim_Swch_X_L_Min_FormatValue}, //APPSNS_SENSOR_LIM_SWCH_X_L_MIN
-        {APPSNS_MEASTYPE_RAW,                                         APPSNS_SPEC_Lim_Swch_X_L_Max_SetCfg,                        APPSNS_SPEC_Lim_Swch_X_L_Max_GetSigValue,                      APPSNS_SPEC_Lim_Swch_X_L_Max_FormatValue}, //APPSNS_SENSOR_LIM_SWCH_X_L_MAX
-        {APPSNS_MEASTYPE_RAW,                                         APPSNS_SPEC_Lim_Swch_X_R_Min_SetCfg,                        APPSNS_SPEC_Lim_Swch_X_R_Min_GetSigValue,                      APPSNS_SPEC_Lim_Swch_X_R_Min_FormatValue}, //APPSNS_SENSOR_LIM_SWCH_X_R_MIN
-        {APPSNS_MEASTYPE_RAW,                                         APPSNS_SPEC_Lim_Swch_X_R_Max_SetCfg,                        APPSNS_SPEC_Lim_Swch_X_R_Max_GetSigValue,                      APPSNS_SPEC_Lim_Swch_X_R_Max_FormatValue}, //APPSNS_SENSOR_LIM_SWCH_X_R_MAX
-        {APPSNS_MEASTYPE_RAW,                                         APPSNS_SPEC_Lim_Swch_Y_Min_SetCfg,                          APPSNS_SPEC_Lim_Swch_Y_Min_GetSigValue,                        APPSNS_SPEC_Lim_Swch_Y_Min_FormatValue}, //APPSNS_SENSOR_LIM_SWCH_Y_MIN
-        {APPSNS_MEASTYPE_RAW,                                         APPSNS_SPEC_Lim_Swch_Y_Max_SetCfg,                          APPSNS_SPEC_Lim_Swch_Y_Max_GetSigValue,                        APPSNS_SPEC_Lim_Swch_Y_Max_FormatValue}, //APPSNS_SENSOR_LIM_SWCH_Y_MAX
-        {APPSNS_MEASTYPE_RAW,                                         APPSNS_SPEC_Lim_Swch_Z_Min_SetCfg,                          APPSNS_SPEC_Lim_Swch_Z_Min_GetSigValue,                        APPSNS_SPEC_Lim_Swch_Z_Min_FormatValue}, //APPSNS_SENSOR_LIM_SWCH_Z_MIN
-        {APPSNS_MEASTYPE_RAW,                                         APPSNS_SPEC_Lim_Swch_Z_Max_SetCfg,                          APPSNS_SPEC_Lim_Swch_Z_Max_GetSigValue,                        APPSNS_SPEC_Lim_Swch_Z_Max_FormatValue}, //APPSNS_SENSOR_LIM_SWCH_Z_MAX
     };
 
     /**< Variable for Sensors Unity Management */
     const t_eAPPSNS_SnsMeasType c_AppSns_SnsMeasType_ae[APPSNS_SENSOR_NB] = {
-        APPSNS_MEASTYPE_RAW,                                         // APPSNS_SENSOR_LIM_SWCH_X_L_MIN
-        APPSNS_MEASTYPE_RAW,                                         // APPSNS_SENSOR_LIM_SWCH_X_L_MAX
-        APPSNS_MEASTYPE_RAW,                                         // APPSNS_SENSOR_LIM_SWCH_X_R_MIN
-        APPSNS_MEASTYPE_RAW,                                         // APPSNS_SENSOR_LIM_SWCH_X_R_MAX
-        APPSNS_MEASTYPE_RAW,                                         // APPSNS_SENSOR_LIM_SWCH_Y_MIN
-        APPSNS_MEASTYPE_RAW,                                         // APPSNS_SENSOR_LIM_SWCH_Y_MAX
-        APPSNS_MEASTYPE_RAW,                                         // APPSNS_SENSOR_LIM_SWCH_Z_MIN
-        APPSNS_MEASTYPE_RAW,                                         // APPSNS_SENSOR_LIM_SWCH_Z_MAX
     };
 
     /* CAUTION : Automatic generated code section for Variable: End */

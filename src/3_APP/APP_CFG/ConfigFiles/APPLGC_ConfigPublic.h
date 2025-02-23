@@ -55,41 +55,10 @@
 
     /* CAUTION : Automatic generated code section for Enum: Start */
     /**
-    * @brief Enum for Service Gtry_X
-    */
-    typedef enum ____t_eAPPLGC_SrvGtry_X
-    {
-        APPLGC_ACT_MTR_X_L = 0x00,
-        APPLGC_ACT_MTR_X_R,
-        APPLGC_GTRY_X_ACT_NB,
-    } t_eAPPLGC_SrvGtry_X;
-
-    /**
-    * @brief Enum for Service Gtry_Y
-    */
-    typedef enum ____t_eAPPLGC_SrvGtry_Y
-    {
-        APPLGC_ACT_MTR_Y = 0x00,
-        APPLGC_GTRY_Y_ACT_NB,
-    } t_eAPPLGC_SrvGtry_Y;
-
-    /**
-    * @brief Enum for Service Gtry_Z
-    */
-    typedef enum ____t_eAPPLGC_SrvGtry_Z
-    {
-        APPLGC_ACT_MTR_Z = 0x00,
-        APPLGC_GTRY_Z_ACT_NB,
-    } t_eAPPLGC_SrvGtry_Z;
-
-    /**
     * @brief Enum for Service Function Listy
     */
     typedef enum ____t_eAPPLGC_SrvList
     {
-        APPLGC_SRV_GTRY_X = 0x00,
-        APPLGC_SRV_GTRY_Y,
-        APPLGC_SRV_GTRY_Z,
 
         APPLGC_SRV_NB,
     } t_eAPPLGC_SrvList;
@@ -98,7 +67,6 @@
     */
     typedef enum ____t_eAPPLGC_AgentList
     {
-        APPLGC_AGENT_GANTRY = 0x00,          // None
 
         APPLGC_AGENT_NB,
     } t_eAPPLGC_AgentList;

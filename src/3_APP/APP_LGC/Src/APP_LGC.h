@@ -28,60 +28,11 @@
     // ********************************************************************
     // *                      Defines
     // ********************************************************************
-    #define APPLGC_APP_COM_SEND(msg) FMKSRL_Transmit(   FMKSRL_SERIAL_LINE_2,         \
-                                                        FMKSRL_TX_ONESHOT,            \
-                                                        msg,                          \
-                                                        APPLGC_APP_PROTOCOL_LEN_DATA, \
-                                                        0,                            \
-                                                        False)
+
     // ********************************************************************
     // *                      Types
     // ********************************************************************
-    enum 
-    {
-        APPLGC_CMD_BYTE_0 = 0x00,
-        APPLGC_CMD_BYTE_1,
-        APPLGC_CMD_BYTE_2,
-        APPLGC_CMD_BYTE_3,
-        APPLGC_CMD_BYTE_4,
-        APPLGC_CMD_BYTE_5,
-        APPLGC_CMD_BYTE_6,
-        APPLGC_CMD_BYTE_7,
 
-        APPLGC_CMD_BYTE_NB,
-    };
-
-    typedef enum 
-    {
-        APPLGC_RCV_CMD_ID_DATA_MODE = 0x01,
-        APPLGC_RCV_CMD_ID_GTRY_X,
-        APPLGC_RCV_CMD_ID_GTRY_Y,
-        APPLGC_RCV_CMD_ID_GTRY_Z,
-        APPLGC_RCV_CMD_ID_RESET_GTRY_STATE,
-        APPLGC_RCV_CMD_ID_EMERGENCY_STOP,
-        APPLGC_RCV_CMD_ID_BIT_ALIVE,
-
-        APPLGC_RCV_CMD_ID_NB,
-    } t_eAPPGC_AppRcvCmdId;
-
-    typedef enum 
-    {
-        APPLGC_SEND_CMD_ID_GTRY_STATE_XYZ = 0x01,
-        APPLGC_SEND_CMD_ID_GTRY_SPEED_XYZ,
-        APPLGC_SEND_CMD_ID_GTRY_INFO,
-        APPLGC_SEND_CMD_ID_ROBOT_INFO,
-        APPLGC_SEND_CMD_ID_ERROR_STATUS,
-        
-        APPLGC_SEND_CMD_ID_NB,
-    } t_eAPPLGC_AppCmdSendId;
-    typedef enum 
-    {
-        APPMGC_SND_CMD_ID_GTRY_STATE_XYZ = 0x00,
-        APPMGC_SND_CMD_ID_GTRY_MISSION_INFO,
-        APPMGC_SND_CMD_ID_GTRY_ROBOT_INFO,
-
-        APPLGC_SND_CMD_ID_NB
-    } t_eAPPLGC_AppSendCmdId;
 	/* CAUTION : Automatic generated code section for Enum: Start */
 
 	/* CAUTION : Automatic generated code section for Enum: End */
@@ -120,7 +71,10 @@
     // ********************************************************************
     // *                      Variables
     // ********************************************************************
-    t_uint32 g_timeCounterLGC; 
+
+    //********************************************************************************
+    //                      Public functions - Prototyupes
+    //********************************************************************************
     /**
     *
     *	@brief
@@ -211,25 +165,6 @@
     *
     *
     */
-    t_eReturnCode APPLGC_GetAppCmd(t_eAPPGC_AppRcvCmdId f_cmdId_e, t_uAPPLGC_CmdValues * f_cmdValues_pu);
-    /**
-    *
-    *	@brief
-    *	@note   
-    *
-    *
-    *	@param[in] 
-    *	@param[out]
-    *	 
-    *
-    *
-    */
-    void APPLGC_ComputeCheckSum(t_uint8 * f_startData_pu8, 
-                                t_uint8 f_datalen_u8,
-                                t_uint8 * f_cheksum_pu8);
-    //********************************************************************************
-    //                      Public functions - Prototyupes
-    //********************************************************************************
 
 #endif // APP_LGC_H_INCLUDED           
 //************************************************************************************

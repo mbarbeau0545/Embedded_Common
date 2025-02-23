@@ -67,10 +67,6 @@
     * @brief Diagnostic Item Configuration
     */
     t_cbAPPSDM_AppliedDiagStrategy * c_AppSdm_DiagStragies_apf[APPSDM_DIAG_STRAT_NB]= {
-        APPSDM_SPEC_DiagStrat_Gantry_Off,
-        APPSDM_SPEC_DiagStrat_Gantry_Axe_X_Off,
-        APPSDM_SPEC_DiagStrat_Gantry_Axe_Y_Off,
-        APPSDM_SPEC_DiagStrat_Gantry_Axe_Z_Off,
     };
 
     /**
@@ -81,18 +77,9 @@
     /**
     * @brief Variable for Diagnostic Item Information
     */
-        {(t_uint16)0,                  (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_GANTRY_OFF},  // FMK_CFG_ERROR
-        {(t_uint16)1000,               (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_GANTRY_OFF},  // FMK_OPE_ERROR
-        {(t_uint16)0,                  (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_GANTRY_AXE_X_OFF},// GTRY_AXE_X_ERR
-        {(t_uint16)0,                  (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_GANTRY_AXE_Y_OFF},// GTRY_AXE_Y_ERR
-        {(t_uint16)1000,               (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_GANTRY_AXE_Z_OFF},// GTRY_AXE_Z_ERR
-        {(t_uint16)500,                (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_GANTRY_OFF},  // SUPPLY_VOLTAGE_ERROR
-        {(t_uint16)1500,               (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_GANTRY_OFF},  // APPSYS_CYCLIC_TIMEOUT
-        {(t_uint16)250,                (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_GANTRY_OFF},  // APPUSER_BIT_ALIVE_TIMEOUT
-        {(t_uint16)250,                (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_NONE},        // APPUSER_COMMUNICATION_FAILED
-        {(t_uint16)0,                  (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_NONE},        // APPUSER_COM_CHECKSUM_FAILED
-        {(t_uint16)0,                  (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_GANTRY_OFF},  // GANTRY_MVMT_ERROR
-        {(t_uint16)0,                  (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_GANTRY_OFF},  // GANTRY_SWITCH_LIMIT
+        {(t_uint16)0,                  (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_NONE},        // FMK_CFG_ERROR
+        {(t_uint16)1000,               (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_NONE},        // FMK_OPE_ERROR
+        {(t_uint16)500,                (t_bool)True,                 (t_bool)False,                APPSDM_DIAG_STRAT_NONE},        // APPSYS_CYCLIC_TIMEOUT
     };
 
     /* CAUTION : Automatic generated code section for Variable: End */

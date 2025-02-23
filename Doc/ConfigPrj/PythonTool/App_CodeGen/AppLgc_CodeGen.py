@@ -78,19 +78,20 @@ class AppLgc_CodeGen():
                     + f'    const t_sAPPLGC_AgentFunc c_AppLGc_AgentFunc_apf[{APPLGC_ENUM_AGENT}_NB] =' + '{\n'
         
         for idx, agent_info in enumerate(agent_cfg_a):
-            if idx == 0:
-                enum_agent += f'        {APPLGC_ENUM_AGENT}_{str(agent_info[0]).upper()} = 0x00,'
-            else:
-                enum_agent += f'        {APPLGC_ENUM_AGENT}_{str(agent_info[0]).upper()},'
+            if str(agent_info[0]) != 'None':
+                if idx == 0:
+                    enum_agent += f'        {APPLGC_ENUM_AGENT}_{str(agent_info[0]).upper()} = 0x00,'
+                else:
+                    enum_agent += f'        {APPLGC_ENUM_AGENT}_{str(agent_info[0]).upper()},'
 
-            enum_agent += " " * ((SPACE_VARIABLE) - len(f"{APPLGC_ENUM_AGENT}_{str(agent_info[0]).upper()},"))\
-                        + f'// {str(agent_info[-1])}\n'
-            
-            var_agent += '        {'\
-                        + f'{agent_info[0]}_Init,'\
-                        + " " * ((SPACE_VARIABLE) - len(f"{agent_info[0]},"))\
-                        + f'{agent_info[0]}_Cyclic'\
-                        + '},' + f'// {APPLGC_ENUM_AGENT}_{str(agent_info[0]).upper()}\n'
+                enum_agent += " " * ((SPACE_VARIABLE) - len(f"{APPLGC_ENUM_AGENT}_{str(agent_info[0]).upper()},"))\
+                            + f'// {str(agent_info[-1])}\n'
+                
+                var_agent += '        {'\
+                            + f'{agent_info[0]}_Init,'\
+                            + " " * ((SPACE_VARIABLE) - len(f"{agent_info[0]},"))\
+                            + f'{agent_info[0]}_Cyclic'\
+                            + '},' + f'// {APPLGC_ENUM_AGENT}_{str(agent_info[0]).upper()}\n'
 
     
 
@@ -113,37 +114,38 @@ class AppLgc_CodeGen():
         var_max_act_value  += "    /**\n" + "    * @brief Service Max Actuators values \n" + "    */\n"\
                                 + f'    const t_uint8 c_AppLGc_SrvActuatorsMax_ua8[{APPLGC_ENUM_SRV}_NB] =' + ' {\n'
         for idx, service_cfg in enumerate(service_cfg_a):
-            if idx == 0:
-                enum_srv += f'        {APPLGC_ENUM_SRV}_{str(service_cfg[0]).upper()} = 0x00,\n'
-            else:
-                enum_srv += f'        {APPLGC_ENUM_SRV}_{str(service_cfg[0]).upper()},\n'
+            if str(service_cfg[0]) != 'None':
+                if idx == 0:
+                    enum_srv += f'        {APPLGC_ENUM_SRV}_{str(service_cfg[0]).upper()} = 0x00,\n'
+                else:
+                    enum_srv += f'        {APPLGC_ENUM_SRV}_{str(service_cfg[0]).upper()},\n'
 
-            enm_dependencies += "    /**\n" + f"    * @brief Enum for Service {service_cfg[0]}\n" + "    */\n"\
-                    + f"    typedef enum ____t_eAPPLGC_Srv{service_cfg[0]}\n"\
-                    + "    {\n"
+                enm_dependencies += "    /**\n" + f"    * @brief Enum for Service {service_cfg[0]}\n" + "    */\n"\
+                        + f"    typedef enum ____t_eAPPLGC_Srv{service_cfg[0]}\n"\
+                        + "    {\n"
+                
+                var_depencies += "    /**\n" + f"    * @brief Variable for Actuators/Service Mapping\n" + "    */\n"\
+                        + f'        const t_eAPPACT_Actuators c_AppLgc_ActService{service_cfg[0]}Mapp_ae[APPLGC_{str(service_cfg[0]).upper()}_ACT_NB]' + '= {\n'
+
+                decl_srv_val_container +=  "/**\n" + f"* @brief Actuators Values Containers for {service_cfg[0]}\n" + "*/\n"\
+                        + f'static t_uAPPACT_SetValue g_ActContainer{service_cfg[0]}_au[APPLGC_{str(service_cfg[0]).upper()}_ACT_NB];\n\n'
             
-            var_depencies += "    /**\n" + f"    * @brief Variable for Actuators/Service Mapping\n" + "    */\n"\
-                    + f'        const t_eAPPACT_Actuators c_AppLgc_ActService{service_cfg[0]}Mapp_ae[APPLGC_{str(service_cfg[0]).upper()}_ACT_NB]' + '= {\n'
+                var_srv_dependencies += f'        (t_eAPPACT_Actuators *)(&c_AppLgc_ActService{service_cfg[0]}Mapp_ae),\n'
+                for idx, actuator in enumerate(service_cfg[1:]):
+                    if str(actuator) != 'None':
+                        if idx == 0:
+                            enm_dependencies += f'        APPLGC_ACT_{str(actuator).upper()} = 0x00,\n'
+                        else:
+                            enm_dependencies += f'        APPLGC_ACT_{str(actuator).upper()},\n'
 
-            decl_srv_val_container +=  "/**\n" + f"* @brief Actuators Values Containers for {service_cfg[0]}\n" + "*/\n"\
-                    + f'static t_uAPPACT_SetValue g_ActContainer{service_cfg[0]}_au[APPLGC_{str(service_cfg[0]).upper()}_ACT_NB];\n\n'
-            
-            var_srv_dependencies += f'        (t_eAPPACT_Actuators *)(&c_AppLgc_ActService{service_cfg[0]}Mapp_ae),\n'
-            for idx, actuator in enumerate(service_cfg[1:]):
-                if str(actuator) != 'None':
-                    if idx == 0:
-                        enm_dependencies += f'        APPLGC_ACT_{str(actuator).upper()} = 0x00,\n'
-                    else:
-                        enm_dependencies += f'        APPLGC_ACT_{str(actuator).upper()},\n'
+                        var_depencies += f'        {ENUM_APPACT_ACTUATOR_RT}_{str(actuator).upper()},\n'
 
-                    var_depencies += f'        {ENUM_APPACT_ACTUATOR_RT}_{str(actuator).upper()},\n'
+                var_max_act_value += f'        (t_uint8)APPLGC_{str(service_cfg[0]).upper()}_ACT_NB,\n'
+                var_depencies += '    };\n\n'
+                enm_dependencies += f'        APPLGC_{str(service_cfg[0]).upper()}_ACT_NB,\n'
+                enm_dependencies += '    } ' +f't_eAPPLGC_Srv{service_cfg[0]};\n\n'
 
-            var_max_act_value += f'        (t_uint8)APPLGC_{str(service_cfg[0]).upper()}_ACT_NB,\n'
-            var_depencies += '    };\n\n'
-            enm_dependencies += f'        APPLGC_{str(service_cfg[0]).upper()}_ACT_NB,\n'
-            enm_dependencies += '    } ' +f't_eAPPLGC_Srv{service_cfg[0]};\n\n'
-
-            var_act_srv_asso += f'    g_srvFuncInfo_as[{APPLGC_ENUM_SRV}_{str(service_cfg[0]).upper()}].actVal_pau = (t_uAPPACT_SetValue *)(&g_ActContainer{service_cfg[0]}_au);\n'
+                var_act_srv_asso += f'    g_srvFuncInfo_as[{APPLGC_ENUM_SRV}_{str(service_cfg[0]).upper()}].actVal_pau = (t_uAPPACT_SetValue *)(&g_ActContainer{service_cfg[0]}_au);\n'
 
         var_max_act_value += '    };\n\n'
         var_srv_dependencies += '    };\n\n'

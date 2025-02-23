@@ -33,14 +33,7 @@
     */
     typedef enum
     {
-        APPSNS_SENSOR_LIM_SWCH_X_L_MIN = 0x0,   /**< Limit Switch for motor X left, min */
-        APPSNS_SENSOR_LIM_SWCH_X_L_MAX,         /**< Limit Switch for motor X left, max */
-        APPSNS_SENSOR_LIM_SWCH_X_R_MIN,         /**< Limit Switch for motor X right, min */
-        APPSNS_SENSOR_LIM_SWCH_X_R_MAX,         /**< Limit Switch for motor X right, max */
-        APPSNS_SENSOR_LIM_SWCH_Y_MIN,           /**< Limit Switch for motor Y, min */
-        APPSNS_SENSOR_LIM_SWCH_Y_MAX,           /**< Limit Switch for motor Y, max */
-        APPSNS_SENSOR_LIM_SWCH_Z_MIN,           /**< Limit Switch for motor Z, min */
-        APPSNS_SENSOR_LIM_SWCH_Z_MAX,           /**< Limit Switch for motor Z, max */
+        APPSNS_SENSOR_NONE = 0x0,               /**< None */
     
         APPSNS_SENSOR_NB,
     } t_eAPPSNS_Sensors;

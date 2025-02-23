@@ -19,11 +19,9 @@
     // *                      Includes
     // ********************************************************************
     #include "TypeCommon.h"
-    #include "Motor/CL42T/Src/CL42T.h"
     // ********************************************************************
     // *                      Defines
     // ********************************************************************
-    #define APPACT_DEFAULT_FREQ_MOTOR ((t_uint32)100)
     // ********************************************************************
     // *                      Types
     // ********************************************************************
@@ -33,10 +31,7 @@
     */
     typedef enum
     {
-        APPACT_ACTUATOR_MTR_X_L = 0x0,            /**< Left Motor Axe X on the left */
-        APPACT_ACTUATOR_MTR_X_R,                  /**< Left Motor Axe X on the right */
-        APPACT_ACTUATOR_MTR_Y,                    /**< Left Motor Axe Y */
-        APPACT_ACTUATOR_MTR_Z,                    /**< Left Motor Axe Z */
+        APPACT_ACTUATOR_NONE = 0x0,               /**< None */
     
         APPACT_ACTUATOR_NB,
     } t_eAPPACT_Actuators;
@@ -46,7 +41,6 @@
     */
     typedef enum
     {
-        APPACT_DRIVER_CL42T = 0x0,              /**< Driver for Motor Variateur */
     
         APPACT_DRIVER_NB,
     } t_eAPPACT_Drivers;
@@ -72,13 +66,11 @@
 	//-----------------------------STRUCT TYPES---------------------------//
     typedef union 
     {
-        t_sCL42T_GetMotorValue Motor_s;
         t_sint32 setPoint_s32;
     } t_uAPPACT_GetValue;
 
     typedef union 
     {
-        t_sCL42T_SetMotorValue Motor_s;
         t_sint32 setPoint_s32;
     } t_uAPPACT_SetValue;
 
