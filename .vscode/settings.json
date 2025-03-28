@@ -83,7 +83,10 @@
     "gantry_configpublic.h": "c",
     "appact_spec_mtr_y.h": "c",
     "appact_spec_mtr_x_l.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "libramp.h": "c",
+    "appuds.h": "c",
+    "app_sys.h": "c"
   },
   "stm32-for-vscode.armToolchainPath": false,
   "C_Cpp_Runner.cCompilerPath": "gcc",

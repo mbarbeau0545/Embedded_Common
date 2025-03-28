@@ -377,7 +377,7 @@ static t_eReturnCode s_APPLGC_Operational(void)
     }
 
     if(Ret_e >= RC_OK)
-    {
+    { 
         Ret_e = s_APPLGC_SetActValues();
     }
     return Ret_e;
