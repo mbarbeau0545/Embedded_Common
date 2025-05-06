@@ -119,7 +119,7 @@
     *   @retval HAL_OK                     @ref HAL_OK
     *   @retval HAL_ERROR                  @ref HAL_ERROR
     */
-    typedef HAL_TIM_StateTypeDef (t_cbFMKTIM_GetTimerState)(TIM_HandleTypeDef *f_handleTimer_s);
+    typedef HAL_TIM_StateTypeDef (t_cbFMKTIM_GetTimerState)(const TIM_HandleTypeDef *f_handleTimer_s);
     /**
     *
     *	@brief      HAL Timer function for Init

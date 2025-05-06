@@ -182,6 +182,11 @@
         t_sLIBRamp_RampCfg * rampCfg_ps;        /**< Ramp signal configuration, put NULL if not used */
         t_eFMKIO_PwmCtrlType ctrlType_e;
     } t_sFMKIO_PwmControlPrm;
+
+    /**
+     * @brief @ref t_sFMKIO_SigEcdrCfg
+     */
+    typedef t_sFMKTIM_EcdrCfg t_sFMKIO_SigEcdrCfg;
     //-----------------------------TYPEDEF TYPES---------------------------//
     /**
     *
@@ -394,7 +399,7 @@
     */
     t_eReturnCode FMKIO_Set_InEncoderSigCfg(t_eFMKIO_InEcdrSignals f_InEncdr_e,
                                             t_uint32 f_PulsePerRevolution_u32,
-                                            t_sFMKTIM_EcdrCfg f_HwEcdrCfg_s,
+                                            t_sFMKIO_SigEcdrCfg f_HwEcdrCfg_s,
                                             t_eFMKIO_PullMode f_pull_e,
                                             t_eFMKIO_SpdMode f_spd_e,
                                             t_eFMKIO_EcdrStartOpe f_startOpe);

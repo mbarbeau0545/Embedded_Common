@@ -65,3 +65,16 @@ Points Clés
 Modes x4 (TI12) offrent la meilleure résolution, mais peuvent augmenter la charge du CPU si les signaux sont très rapides.
 Les modes x1 (X1_TI1, X1_TI2) sont utiles pour des systèmes moins exigeants ou quand une seule entrée est utilisée.
 Les modes ClockPlusDirection et DirectionalClock permettent de traiter des scénarios spécifiques où l'encodeur fournit des informations supplémentaires via un signal directionnel.
+
+Exemple cfg
+ hwEcdrCfg_s.HwMode_e = FMKTIM_ECDR_MODE_TI12;
+    hwEcdrCfg_s.freqEcdr_u32 = (t_uint32)(260000 * 4);
+    hwEcdrCfg_s.IC1_s.Polarity_e = FMKTIM_ECDR_IN_POLARITY_RISING;
+    hwEcdrCfg_s.IC1_s.Selection_e = FMKTIM_ICSELECT_DIRECT_TI;
+    hwEcdrCfg_s.IC2_s.Polarity_e = FMKTIM_ECDR_IN_POLARITY_RISING;
+    hwEcdrCfg_s.IC2_s.Selection_e = FMKTIM_ICSELECT_DIRECT_TI;
+
+
+Si vous voulez l’angle : angle = CNT × (360 / (PPR × 4))
+Si vous voulez la distance parcourue : distance = CNT × (pas / (PPR × 4))
+En mode X4 -> 4 ticks par période du signal donc si PPR (impulsions par tour) = 100, cela nous fait 400 ticks par tours  

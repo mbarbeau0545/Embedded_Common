@@ -218,7 +218,7 @@ t_eReturnCode APPACT_Get_ActValue(t_eAPPACT_Actuators f_actuator_e, t_uAPPACT_Ge
     {
         Ret_e = RC_ERROR_PARAM_INVALID;
     }
-    if(f_actValue_pu == (t_float32 *)NULL)
+    if(f_actValue_pu == (t_uAPPACT_GetValue *)NULL)
     {
         Ret_e = RC_ERROR_PTR_NULL;
     }

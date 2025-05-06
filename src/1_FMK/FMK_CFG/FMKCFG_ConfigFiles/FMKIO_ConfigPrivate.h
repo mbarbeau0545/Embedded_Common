@@ -85,10 +85,10 @@
 
     typedef struct 
     {
-        t_sFMKIO_BspSigCfg SigPos_s;
-        t_sFMKIO_BspSigCfg SigDir_s;
-        t_eFMKTIM_InterruptLineIO ITLine_e;
-        t_uint8            BspAlternateFunc_u8;
+        t_sFMKIO_BspSigCfg          SigPos_s;
+        t_sFMKIO_BspSigCfg          SigDir_s;
+        t_uint8                     BspAlternateFunc_u8;
+        t_eFMKTIM_InterruptLineIO   ITLine_e;
     } t_sFMKIO_BspEcdrCfg;
     // ********************************************************************
     // *                      Prototypes
@@ -211,7 +211,8 @@
 
     const t_sFMKIO_BspEcdrCfg c_FmkIo_InEcdrSigBspCfg_as[FMKIO_INPUT_ENCODER_NB] = 
     {
-
+        {{FMKIO_GPIO_PORT_C,             FMKIO_GPIO_PIN_6}, {FMKIO_GPIO_PORT_C,             FMKIO_GPIO_PIN_7},   GPIO_AF4_TIM8,  FMKTIM_INTERRUPT_LINE_IO_61},      // FMKIO_INPUT_ENCODER_1
+        {{FMKIO_GPIO_PORT_C,             FMKIO_GPIO_PIN_6}, {FMKIO_GPIO_PORT_C,             FMKIO_GPIO_PIN_7},   GPIO_AF4_TIM8,  FMKTIM_INTERRUPT_LINE_IO_61},      // FMKIO_INPUT_ENCODER_2
     };
 
     //********************************************************************************

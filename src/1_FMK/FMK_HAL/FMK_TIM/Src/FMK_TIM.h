@@ -180,14 +180,14 @@
         FMKTIM_EVNT_OPE_NB,
     } t_eFMKTIM_EvntOpe;
 
-    typedef struct __t_sFMKTIM_PwmOpe
+    typedef struct
     {
         t_uint32 frequency_u32;         /**< update frequency value */
         t_uint16 dutyCycle_u16;         /**< update duty cycle value */
         t_uint16 nbPulses_u16;          /**< update nbPulses_u16 value */
     } t_sFMKTIM_PwmOpe;
 
-    typedef struct _t_sFMKTIM_ICOpe
+    typedef struct 
     {
         t_uint32 frequency_u32;
         t_eFMKTIM_ICState IcState_e;
@@ -242,9 +242,6 @@
     typedef struct 
     {
         t_eFMKTIM_EcdrMode HwMode_e;        /**< The Encoder Mode */
-        t_uint32 freqEcdr_u32;              /**< Frequency Encode sampling, Must four times superrior than Max Signal Frequency 
-                                                where Fsignal = SpeedMax(tr/min) / (PPR / 60)
-                                                where PPR = Pulse Per Revolution */
         t_sFMKTIM_ICCfg IC1_s;              /**< Input Compare Line 1 Configuration */
         t_sFMKTIM_ICCfg IC2_s;              /**< Input Compare Line 2 Configuration */
     } t_sFMKTIM_EcdrCfg;
@@ -338,9 +335,11 @@
     *               the right register. IT & DMA are used to get sample of position & direction which is not useful in 
     *               embeded system (I suppose).\n
     *
-    *	@param[in]  f_InterruptLine1_e       : enum value for Interrupt Line 1, value from @ref t_eFMKTIM_InterruptLineIO
-    *	@param[in]  f_InterruptLine2_e       : enum value for Interrupt Line 2, value from @ref t_eFMKTIM_InterruptLineIO
-    *	@param[in]  EcdrCfg_s               : Encoder Configuration.
+    *	@param[in]  f_InterruptLine1_e        : enum value for Interrupt Line 1, value from @ref t_eFMKTIM_InterruptLineIO
+    *	@param[in]  f_EcdrCfg_s               : Encoder Configuration.
+    *	@param[in]  f_ARRValue_u32            : ARR value link to one revolution of the motor, basically depending on the mode x1, x2, x4
+                                                ARR value will be multiply but the ARR Value register is exactly the PPR, which means, the value return is
+                                                exactly the position of the motor, 2 * PI radians normalize have to be made. 
     *
     *  @retval RC_OK                             @ref RC_OK
     *  @retval RC_ERROR_PARAM_INVALID            @ref RC_ERROR_PARAM_INVALID

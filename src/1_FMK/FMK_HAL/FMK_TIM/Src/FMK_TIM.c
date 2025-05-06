@@ -1550,11 +1550,25 @@ static t_eReturnCode s_FMKTIM_RqstLineValidityOpe(  t_eFMKTIM_InterruptLineType 
         {
             *f_timerInfo_ps = (t_sFMKTIM_TimerInfo *)(&g_TimerInfo_as[timer_e]);
         }
-        if(((*f_timerInfo_ps)->isConfigured_b == (t_bool)False)
-        || ((*f_timerInfo_ps)->Channel_as[(*f_chnl_pe)].IsChnlConfigure_b == (t_bool)False))
+        // min channel all
+        if((*f_chnl_pe != FMKTIM_CHANNEL_ALL))
         {
-            Ret_e = RC_ERROR_INSTANCE_NOT_INITIALIZED;
-            ASSERT((t_uint16)Ret_e);
+            if(((*f_timerInfo_ps)->isConfigured_b == (t_bool)False)
+            || ((*f_timerInfo_ps)->Channel_as[(*f_chnl_pe)].IsChnlConfigure_b == (t_bool)False))
+            {
+                Ret_e = RC_ERROR_INSTANCE_NOT_INITIALIZED;
+                ASSERT((t_uint16)Ret_e);
+            }
+        }
+        else 
+        {
+            if(((*f_timerInfo_ps)->isConfigured_b == (t_bool)False)
+            || ((*f_timerInfo_ps)->Channel_as[FMKTIM_CHANNEL_1].IsChnlConfigure_b == (t_bool)False)
+            || ((*f_timerInfo_ps)->Channel_as[FMKTIM_CHANNEL_2].IsChnlConfigure_b == (t_bool)False))
+            {
+                Ret_e = RC_ERROR_INSTANCE_NOT_INITIALIZED;
+                ASSERT((t_uint16)Ret_e);
+            }
         }
         if((*f_timerInfo_ps)->HwCfg_e != f_HwTypeSuppose_e)
         {
@@ -2364,7 +2378,8 @@ static t_eReturnCode s_FMKTIM_Get_BspChannel(t_eFMKTIM_InterruptChnl f_channel_e
     {
         Ret_e = RC_ERROR_PTR_NULL;
     }
-    if (f_channel_e >= FMKTIM_CHANNEL_NB)
+    if ((f_channel_e >= FMKTIM_CHANNEL_NB)
+    &&  (f_channel_e != FMKTIM_CHANNEL_ALL))
     {
         Ret_e = RC_ERROR_PARAM_INVALID;
     }
@@ -2732,7 +2747,8 @@ static t_eReturnCode s_FMKTIM_Get_TimChnlFromITLine(t_eFMKTIM_InterruptLineType 
             break;
     }
     if(((*f_timer_pe) >= FMKTIM_TIMER_NB)
-    || ((*f_channel_pe) >= FMKTIM_CHANNEL_NB))
+    || (((*f_channel_pe) >= FMKTIM_CHANNEL_NB)
+    && (*f_channel_pe) != FMKTIM_CHANNEL_ALL))
     {
         Ret_e = RC_ERROR_LIMIT_REACHED;
         ASSERT((t_uint16)Ret_e);

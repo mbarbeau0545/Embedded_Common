@@ -55,13 +55,7 @@
 // ********************************************************************
 // *                      Prototypes
 // ********************************************************************
-typedef enum 
-{
-    TYPETEST_PWM_FREQ_CHANGE = 0x00,
-    TYPETEST_PWM_DC_CHANGE,
-    TYPETEST_PWM_DC_FREQ_CHANGE,
-    TYPERTEST_PWM_PULSE_GEN
-} t_eAPPLGC_TypeTest;
+
 // ********************************************************************
 // *                      Variables
 // ********************************************************************
@@ -413,30 +407,28 @@ t_eReturnCode APPLGC_GetSnsValue(t_eAPPSNS_Sensors f_sensors_e, t_sint32 * f_sns
 //********************************************************************************
 //                      Local functions - Implementation
 //********************************************************************************
-static void s_APPLGC_Callback(t_eFMKTIM_InterruptLineType f_InterruptType_e, t_uint8 f_InterruptLine_u8);
+
 /*********************************
  * s_APPLGC_ConfigurationState
  *********************************/
 static t_eReturnCode s_APPLGC_ConfigurationState(void)
 {
 
-    t_eReturnCode Ret_e = RC_OK;
-    t_uint8 idxSns_u8;
+    t_eReturnCode Ret_e;
+    t_sFMKIO_SigEcdrCfg hwEcdrCfg_s;
 
-    for(idxSns_u8 = 0 ; idxSns_u8 < 2 ; idxSns_u8++)
-    {
-        Ret_e = SafeMem_SecureBlockInit(&g_SecBlockSnsValue_as[idxSns_u8],
-                                        &g_snsValues_af32[idxSns_u8],
-                                        sizeof(t_float32),
-                                        4);
-    }
-    if(Ret_e == RC_OK)
-    {
-        Ret_e = FMKTIM_Set_EvntTimerCfg(FMKTIM_INTERRUPT_LINE_EVNT_2,
-                                        1,
-                                        s_APPLGC_Callback);
-    }
+    hwEcdrCfg_s.HwMode_e = FMKTIM_ECDR_MODE_TI12;
+    hwEcdrCfg_s.IC1_s.Polarity_e = FMKTIM_ECDR_IN_POLARITY_RISING;
+    hwEcdrCfg_s.IC1_s.Selection_e = FMKTIM_ICSELECT_DIRECT_TI;
+    hwEcdrCfg_s.IC2_s.Polarity_e = FMKTIM_ECDR_IN_POLARITY_RISING;
+    hwEcdrCfg_s.IC2_s.Selection_e = FMKTIM_ICSELECT_DIRECT_TI;
     
+    Ret_e = FMKIO_Set_InEncoderSigCfg(  FMKIO_INPUT_ENCODER_1,
+                                        1000, // PPR
+                                        hwEcdrCfg_s,
+                                        FMKIO_PULL_MODE_UP,
+                                        FMKIO_SPD_MODE_HIGH,
+                                        FMKIO_ENCODER_START_BOTH);
     /*SrlCfg_s.runMode_e = FMKSRL_LINE_RUNMODE_DMA;
     SrlCfg_s.hwProtType_e = FMKSRL_HW_PROTOCOL_UART;
 
@@ -469,25 +461,7 @@ static t_eReturnCode s_APPLGC_ConfigurationState(void)
 static t_eReturnCode s_APPLGC_PreOperational(void)
 {
     t_eReturnCode Ret_e = RC_OK;
-    Ret_e = FMKTIM_Set_EvntLineState(FMKTIM_INTERRUPT_LINE_EVNT_2,
-                                    FMKTIM_EVNT_OPE_START_TIMER);
     return Ret_e;
-}
-
-static void s_APPLGC_Callback(t_eFMKTIM_InterruptLineType f_InterruptType_e, t_uint8 f_InterruptLine_u8)
-{
-    t_eReturnCode Ret_e = RC_OK;
-    t_uint8 idxSns_u8;
-    static t_float32 value_f32 = 0.0f;
-
-    for(idxSns_u8 = 0 ; idxSns_u8 < 2 ; idxSns_u8++)
-    {
-        Ret_e = SMB_Write(   &g_SecBlockSnsValue_as[idxSns_u8],
-                                            &value_f32);
-        value_f32 += (t_float32)1.0f;
-    }
-
-    return;
 }
 /*********************************
  * s_APPLGC_Operational
@@ -495,22 +469,17 @@ static void s_APPLGC_Callback(t_eFMKTIM_InterruptLineType f_InterruptType_e, t_u
 static t_eReturnCode s_APPLGC_Operational(void)
 {
     t_eReturnCode Ret_e = RC_OK;
-    t_uint16 prmValue_u16 = (t_uint16)0;
-    t_uint8 LLI_u8;
-    for(LLI_u8 = (t_uint8)0 ; LLI_u8 < APPSPM_PRM_NB ; LLI_u8++)
-    {
-        Ret_e = APPSPM_GetParam(LLI_u8, &prmValue_u16);
-
-        if(Ret_e == RC_OK)
-        {
-            if(prmValue_u16 > (t_uint16)2500)
-            {
-                prmValue_u16 = (t_uint16)12560;
-                Ret_e = APPSPM_SetParam(LLI_u8, prmValue_u16);
-            }
-        }
-    }
+    t_uint32 prmValue_u16 = (t_uint16)0;
+    t_eFMKIO_EcdrDir ecdrdirValue_e;
+    t_uint32 ecdrPosition_u32;
    
+
+    Ret_e = FMKIO_Get_InEcdrDirectionValue(FMKIO_INPUT_ENCODER_1, &ecdrdirValue_e);
+
+    if(Ret_e == RC_OK)
+    {
+        Ret_e = FMKIO_Get_InEcdrPositionValue(FMKIO_INPUT_ENCODER_1, &ecdrPosition_u32);
+    }
     /*t_uint8 idxAgent_u8;
 
     if(g_resetSrvState_b == (t_bool)True)
