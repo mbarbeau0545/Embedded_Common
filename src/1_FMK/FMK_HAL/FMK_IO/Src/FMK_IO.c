@@ -668,21 +668,22 @@ t_eReturnCode FMKIO_Set_InEncoderSigCfg(t_eFMKIO_InEcdrSignals f_InEncdr_e,
     }
     if(Ret_e == RC_OK)
     {
-        //---- reach Information & Initialize Pin -----//
-        gpioPort_e = c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].SigDir_s.HwGpio_e;
-        gpioPin_e = c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].SigDir_s.HwPin_e;
-        bspAF_u8 = c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].BspAlternateFunc_u8;
+        //----- Call FMKTIM Timer Encoder Configuration -----//
+        Ret_e = FMKTIM_Set_EcdrLineCfg(  c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].ITLine_e,
+                                            f_HwEcdrCfg_s,
+                                            f_PulsePerRevolution_u32);
 
-        Ret_e = s_FMKIO_Set_BspSigCfg(  gpioPort_e,
-                                        gpioPin_e,
-                                        GPIO_MODE_AF_PP,
-                                        f_pull_e,
-                                        f_spd_e,
-                                        bspAF_u8);
         if(Ret_e == RC_OK)
         {
-            gpioPort_e = c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].SigPos_s.HwGpio_e;
-            gpioPin_e = c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].SigPos_s.HwPin_e;
+            g_InEcdrSigInfo_as[f_InEncdr_e].isEcdrConfigured_b = (t_bool)True;
+            g_InEcdrSigInfo_as[f_InEncdr_e].EcdrOpe = f_startOpe;
+        }
+        if(Ret_e == RC_OK)
+        {
+            //---- reach Information & Initialize Pin -----//
+            gpioPort_e = c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].SigDir_s.HwGpio_e;
+            gpioPin_e = c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].SigDir_s.HwPin_e;
+            bspAF_u8 = c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].BspAlternateFunc_u8;
 
             Ret_e = s_FMKIO_Set_BspSigCfg(  gpioPort_e,
                                             gpioPin_e,
@@ -690,21 +691,19 @@ t_eReturnCode FMKIO_Set_InEncoderSigCfg(t_eFMKIO_InEcdrSignals f_InEncdr_e,
                                             f_pull_e,
                                             f_spd_e,
                                             bspAF_u8);
-        }
-        if(Ret_e == RC_OK)
-        {
-
-            //----- Call FMKTIM Timer Encoder Configuration -----//
-            Ret_e = FMKTIM_Set_EcdrLineCfg(  c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].ITLine_e,
-                                                f_HwEcdrCfg_s,
-                                                f_PulsePerRevolution_u32);
-
             if(Ret_e == RC_OK)
             {
-                g_InEcdrSigInfo_as[f_InEncdr_e].isEcdrConfigured_b = (t_bool)True;
-                g_InEcdrSigInfo_as[f_InEncdr_e].EcdrOpe = f_startOpe;
+                gpioPort_e = c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].SigPos_s.HwGpio_e;
+                gpioPin_e = c_FmkIo_InEcdrSigBspCfg_as[f_InEncdr_e].SigPos_s.HwPin_e;
+
+                Ret_e = s_FMKIO_Set_BspSigCfg(  gpioPort_e,
+                                                gpioPin_e,
+                                                GPIO_MODE_AF_PP,
+                                                f_pull_e,
+                                                f_spd_e,
+                                                bspAF_u8);
             }
-        }
+        }        
     }
 
     return Ret_e;
@@ -1533,19 +1532,19 @@ t_eReturnCode FMKIO_Get_InEcdrDirectionValue(t_eFMKIO_InEcdrSignals f_signal_e, 
                                                     (&direction_u32));
         if(Ret_e == RC_OK)
         {
-            switch(direction_u32)
+            if(direction_u32 == (t_uint32)0x01)
             {
-                case 0:
-                    direction_e = FMKIO_ENCODER_DIR_BACKWARD;
-                    break;
-                case 1:
-                    direction_e = FMKIO_ENCODER_DIR_BACKWARD;
-                    break;
-                default: 
-                    Ret_e = RC_WARNING_NO_OPERATION;
-                    break;
+                direction_e = FMKIO_ENCODER_DIR_BACKWARD;
             }
-
+            else if (direction_u32 == (t_uint32)(0x11))
+            {
+                direction_e = FMKIO_ENCODER_DIR_FORWARD;   
+            }
+            else 
+            {
+                Ret_e = RC_WARNING_NO_OPERATION;
+                direction_e = FMKIO_ENCODER_DIR_BACKWARD;
+            }
             *f_Dirvalue_pe = direction_e;
         }
     }

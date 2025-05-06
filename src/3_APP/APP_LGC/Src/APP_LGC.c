@@ -415,6 +415,7 @@ static t_eReturnCode s_APPLGC_ConfigurationState(void)
 {
 
     t_eReturnCode Ret_e;
+    static 
     t_sFMKIO_SigEcdrCfg hwEcdrCfg_s;
 
     hwEcdrCfg_s.HwMode_e = FMKTIM_ECDR_MODE_TI12;
@@ -424,7 +425,7 @@ static t_eReturnCode s_APPLGC_ConfigurationState(void)
     hwEcdrCfg_s.IC2_s.Selection_e = FMKTIM_ICSELECT_DIRECT_TI;
     
     Ret_e = FMKIO_Set_InEncoderSigCfg(  FMKIO_INPUT_ENCODER_1,
-                                        1000, // PPR
+                                        (t_uint32)4000, // PPR
                                         hwEcdrCfg_s,
                                         FMKIO_PULL_MODE_UP,
                                         FMKIO_SPD_MODE_HIGH,
@@ -472,20 +473,34 @@ static t_eReturnCode s_APPLGC_Operational(void)
     t_uint32 prmValue_u16 = (t_uint16)0;
     t_eFMKIO_EcdrDir ecdrdirValue_e;
     t_uint32 ecdrPosition_u32;
-   
+    char msgbuffer[64];
 
+
+        
+    
     Ret_e = FMKIO_Get_InEcdrDirectionValue(FMKIO_INPUT_ENCODER_1, &ecdrdirValue_e);
-
+    
     if(Ret_e == RC_OK)
     {
         Ret_e = FMKIO_Get_InEcdrPositionValue(FMKIO_INPUT_ENCODER_1, &ecdrPosition_u32);
     }
-    /*t_uint8 idxAgent_u8;
 
-    if(g_resetSrvState_b == (t_bool)True)
-    {
-        Ret_e = s_APPLGC_ResetSrvState();
-        if(Ret_e == RC_OK)
+    sprintf(msgbuffer, "Dir :%d\r\n Position : %d", (t_uint8)ecdrdirValue_e, ecdrPosition_u32);
+
+    Ret_e = FMKSRL_Transmit(FMKSRL_SERIAL_LINE_2,
+                            FMKSRL_TX_ONESHOT,
+                            (t_uint8 * )msgbuffer,
+                            strlen(msgbuffer),
+                            (t_uint16)0,
+                            (t_bool)False);
+
+        
+        /*t_uint8 idxAgent_u8;
+        
+        if(g_resetSrvState_b == (t_bool)True)
+        {
+            Ret_e = s_APPLGC_ResetSrvState();
+            if(Ret_e == RC_OK)
         {
             g_resetSrvState_b = (t_bool)False;
         }

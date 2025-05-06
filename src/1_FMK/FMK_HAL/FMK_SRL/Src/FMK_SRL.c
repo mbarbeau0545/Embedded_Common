@@ -1912,6 +1912,8 @@ static t_eReturnCode s_FMKSRL_UpdateTxBufferInfo(   t_sFMKSRL_SerialInfo * f_srl
         //------ Check if a msg is currently send------//
         if(GETBIT(TxBuffer_s->status_u16, FMKSRL_BUFFSTATUS_BUSY) == BIT_IS_SET_16B)
         {
+            //---- set bit msg pending ----//
+            SETBIT_8B(TxBuffer_s->status_u16, FMKSRL_BUFFSTATUS_MSG_PENDING);
             Ret_e = RC_WARNING_BUSY;
         }
 

@@ -1915,10 +1915,12 @@ static t_eReturnCode s_FMKTIM_FilledBspEcdrInit(t_sFMKTIM_EcdrCfg * f_EcdrCdg_ps
         {
             //-------- Copy Data--------//
             f_BspEcdrInit_ps->EncoderMode = bspEcdrMode_u32;
-            f_BspEcdrInit_ps->IC1Filter = 0x00;
+            f_BspEcdrInit_ps->IC1Filter = 0x03;
+            f_BspEcdrInit_ps->IC1Prescaler = TIM_ICPSC_DIV1;
             f_BspEcdrInit_ps->IC1Polarity = bspIC1Polarity_u32;
             f_BspEcdrInit_ps->IC1Selection = bspIC1Selection_u32;
-            f_BspEcdrInit_ps->IC2Filter = 0x00;
+            f_BspEcdrInit_ps->IC2Filter = 0x03;
+            f_BspEcdrInit_ps->IC2Prescaler = TIM_ICPSC_DIV1;
             f_BspEcdrInit_ps->IC2Polarity = bspIC2Polarity_u32;
             f_BspEcdrInit_ps->IC2Selection = bspIC2Selection_u32;
         }
@@ -2516,7 +2518,7 @@ static t_eReturnCode s_FMKTIM_GetBspEcdrMode(t_eFMKTIM_EcdrMode f_EcdrMode_e, t_
                 *f_bspEcdrMode_pu32 = (t_uint32)TIM_ENCODERMODE_TI2;
                 break;
             case FMKTIM_ECDR_MODE_TI12:
-                *f_bspEcdrMode_pu32 = (t_uint32)TIM_ENCODERMODE_TI2;
+                *f_bspEcdrMode_pu32 = (t_uint32)TIM_ENCODERMODE_TI12;
                 break;
             case FMKTIM_ECDR_MODE_CLOCKPLUS_DIRECTION_X2:
                 *f_bspEcdrMode_pu32 = (t_uint32)TIM_ENCODERMODE_CLOCKPLUSDIRECTION_X2;
