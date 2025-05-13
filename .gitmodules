@@ -1,0 +1,4 @@
+[submodule "src/3_APP/APP_LGC/Src/Logic"]
+	path = src/3_APP/APP_LGC/Src/Logic
+	url = https://github.com/mbarbeau0545/PickerRbPOC
+	branch = Dev
