@@ -204,7 +204,7 @@
         t_eFMKIO_PullMode pullMode_e;
         t_eFMKIO_SpdMode speedMode_e;
         t_uint8 MultipleTourPerRev_u8;      /**< How many encoder tour means one tour for you */
-    } t_sFMKIO_EncoderCfg;
+    } t_sFMKIO_SigEcdrCfg;
     //-----------------------------TYPEDEF TYPES---------------------------//
     /**
     *
@@ -413,7 +413,7 @@
     *
     */
     t_eReturnCode FMKIO_Set_InEncoderSigCfg(t_eFMKIO_InEcdrSignals f_InEncdr_e,
-                                            t_sFMKIO_EncoderCfg f_encdrCfg_s,
+                                            t_sFMKIO_SigEcdrCfg f_encdrCfg_s,
                                             t_eFMKIO_EcdrStartOpe f_startOpe);
     
     /**

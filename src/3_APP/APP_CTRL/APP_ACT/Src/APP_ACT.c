@@ -46,7 +46,7 @@ typedef struct
 {
     t_eAPPACT_ActuatorState * state_pe;      /**< State of the sensors */
     t_uAPPACT_SetValue actValues_u;            /**< For Debug Purpose */
-    t_bool isConfigured_b
+    t_bool isConfigured_b;
 } t_sAPPACT_ActInfo;
 // ********************************************************************
 // *                      Prototypes
@@ -120,7 +120,7 @@ t_eReturnCode APPACT_Init(void)
         //---- set default value ----//
         g_ActInfo_as[idxAct_u8].isConfigured_b = (t_bool)False;
         (void)SafeMem_memclear((&g_ActInfo_as[idxAct_u8].actValues_u), sizeof(t_uAPPACT_SetValue));
-        g_ActInfo_as[idxAct_u8].state_pe = (&g_ActInfo_as[idxAct_u8]);
+        g_ActInfo_as[idxAct_u8].state_pe = (&g_actState_ae[idxAct_u8]);
     }
     for(; (s_LLDRV_u8 < APPACT_DRIVER_NB) && (Ret_e == RC_OK) ; s_LLDRV_u8++)
     {

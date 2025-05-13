@@ -407,7 +407,16 @@ t_eReturnCode APPLGC_GetSnsValue(t_eAPPSNS_Sensors f_sensors_e, t_sint32 * f_sns
 //********************************************************************************
 //                      Local functions - Implementation
 //********************************************************************************
+static void s_APPLGC_AppEvntCallback(   t_uint8 * f_rxData_pu8, 
+                                        t_uint16 f_dataSize_u16, 
+                                        t_eFMKSRL_RxCallbackInfo f_InfoCb_e);
 
+static void s_APPLGC_AppEvntCallback(   t_uint8 * f_rxData_pu8, 
+                    t_uint16 f_dataSize_u16, 
+                    t_eFMKSRL_RxCallbackInfo f_InfoCb_e)
+{
+    return;
+}
 /*********************************
  * s_APPLGC_ConfigurationState
  *********************************/
@@ -415,22 +424,24 @@ static t_eReturnCode s_APPLGC_ConfigurationState(void)
 {
 
     t_eReturnCode Ret_e;
-    static 
-    t_sFMKIO_SigEcdrCfg hwEcdrCfg_s;
+    t_sFMKIO_SigEcdrCfg SigEcdrCfg_s;
+    t_sFMKSRL_DrvSerialCfg SrlCfg_s;
 
-    hwEcdrCfg_s.HwMode_e = FMKTIM_ECDR_MODE_TI12;
-    hwEcdrCfg_s.IC1_s.Polarity_e = FMKTIM_ECDR_IN_POLARITY_RISING;
-    hwEcdrCfg_s.IC1_s.Selection_e = FMKTIM_ICSELECT_DIRECT_TI;
-    hwEcdrCfg_s.IC2_s.Polarity_e = FMKTIM_ECDR_IN_POLARITY_RISING;
-    hwEcdrCfg_s.IC2_s.Selection_e = FMKTIM_ICSELECT_DIRECT_TI;
+    SigEcdrCfg_s.hwCfg_s.HwMode_e = FMKTIM_ECDR_MODE_TI12;
+    SigEcdrCfg_s.hwCfg_s.IC1_s.Polarity_e = FMKTIM_ECDR_IN_POLARITY_RISING;
+    SigEcdrCfg_s.hwCfg_s.IC1_s.Selection_e = FMKTIM_ICSELECT_DIRECT_TI;
+    SigEcdrCfg_s.hwCfg_s.IC2_s.Polarity_e = FMKTIM_ECDR_IN_POLARITY_RISING;
+    SigEcdrCfg_s.hwCfg_s.IC2_s.Selection_e = FMKTIM_ICSELECT_DIRECT_TI;
+    SigEcdrCfg_s.pullMode_e = FMKIO_PULL_MODE_UP;
+    SigEcdrCfg_s.speedMode_e = FMKIO_SPD_MODE_HIGH;
+    SigEcdrCfg_s.PulsePerRev_u16 = 4000;
+    SigEcdrCfg_s.MultipleTourPerRev_u8 = 1;
+
     
     Ret_e = FMKIO_Set_InEncoderSigCfg(  FMKIO_INPUT_ENCODER_1,
-                                        (t_uint32)4000, // PPR
-                                        hwEcdrCfg_s,
-                                        FMKIO_PULL_MODE_UP,
-                                        FMKIO_SPD_MODE_HIGH,
+                                        SigEcdrCfg_s,
                                         FMKIO_ENCODER_START_BOTH);
-    /*SrlCfg_s.runMode_e = FMKSRL_LINE_RUNMODE_DMA;
+    SrlCfg_s.runMode_e = FMKSRL_LINE_RUNMODE_DMA;
     SrlCfg_s.hwProtType_e = FMKSRL_HW_PROTOCOL_UART;
 
     SrlCfg_s.hwCfg_s.Baudrate_e = FMKSRL_LINE_BAUDRATE_115200,
@@ -440,17 +451,17 @@ static t_eReturnCode s_APPLGC_ConfigurationState(void)
     SrlCfg_s.hwCfg_s.wordLenght_e = FMKSRL_LINE_WORDLEN_8BITS,
 
     SrlCfg_s.CfgSpec_u.uartCfg_s.hwFlowCtrl_e = FMKSRL_UART_HW_FLOW_CTRL_NONE;
-    SrlCfg_s.CfgSpec_u.uartCfg_s.Type_e = FMKSRL_UART_TYPECFG_UART,*/
+    SrlCfg_s.CfgSpec_u.uartCfg_s.Type_e = FMKSRL_UART_TYPECFG_UART,
     
     /*Ret_e = FMKIO_Set_InAnaSigCfg(  FMKIO_INPUT_SIGANA_4,
                                     FMKIO_PULL_MODE_DISABLE,
                                     NULL_FUNCTION);*/
 
 
-    /*Ret_e = FMKSRL_InitDrv( APPLGC_SERIAL_LINE_APP, 
+    Ret_e = FMKSRL_InitDrv( APPLGC_SERIAL_LINE_APP, 
                             SrlCfg_s,
                             s_APPLGC_AppEvntCallback,
-                            (t_cbFMKSRL_TransmitMsgEvent *)NULL_FUNCTION);*/
+                            (t_cbFMKSRL_TransmitMsgEvent *)NULL_FUNCTION);
     
 
     return RC_OK;
@@ -472,7 +483,8 @@ static t_eReturnCode s_APPLGC_Operational(void)
     t_eReturnCode Ret_e = RC_OK;
     t_uint32 prmValue_u16 = (t_uint16)0;
     t_eFMKIO_EcdrDir ecdrdirValue_e;
-    t_uint32 ecdrPosition_u32;
+    t_float32 ecdrPosition_f32;
+    t_float32 ecdrSpeed_f32;
     char msgbuffer[64];
 
 
@@ -482,10 +494,16 @@ static t_eReturnCode s_APPLGC_Operational(void)
     
     if(Ret_e == RC_OK)
     {
-        Ret_e = FMKIO_Get_InEcdrPositionValue(FMKIO_INPUT_ENCODER_1, &ecdrPosition_u32);
+        Ret_e = FMKIO_Get_InEcdrPositionValue(  FMKIO_INPUT_ENCODER_1, 
+                                                FMKIO_ECDR_VAL_FORMAT_MDEGREE,
+                                                &ecdrPosition_f32);
+        
+        Ret_e = FMKIO_Get_InEcdrSpeed(  FMKIO_INPUT_ENCODER_1, 
+                                        FMKIO_ECDR_VAL_FORMAT_MRADIAN,
+                                        &ecdrSpeed_f32);
     }
 
-    sprintf(msgbuffer, "Dir :%d\r\n Position : %d", (t_uint8)ecdrdirValue_e, ecdrPosition_u32);
+    sprintf(msgbuffer, "Dir :%d\r\n Position : %d, speed : %d", (t_uint8)ecdrdirValue_e, (t_uint32)(ecdrPosition_f32), (t_uint32)ecdrSpeed_f32);
 
     Ret_e = FMKSRL_Transmit(FMKSRL_SERIAL_LINE_2,
                             FMKSRL_TX_ONESHOT,

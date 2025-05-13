@@ -140,7 +140,6 @@ static t_eCyclicModState g_FmkIO_ModState_e = STATE_CYCLIC_CFG;
 t_uint32 g_lastTick_ua32[FMKIO_INPUT_SIGEVNT_NB];
 
 /**< State of the fast task */
-static t_bool g_isFastTaskON_b = (t_bool)False;
 static t_bool g_fastTaskPwmStatus_b = (t_bool)False;
 static t_bool g_fastTaskEcdrStatus_b = (t_bool)False;
 //********************************************************************************
@@ -472,11 +471,13 @@ t_eReturnCode FMKIO_Cyclic(void)
         case STATE_CYCLIC_CFG:
         {
             g_FmkIO_ModState_e = STATE_CYCLIC_WAITING;
+            Ret_e = RC_OK;
             break;
         }
         case STATE_CYCLIC_WAITING:
         {
             // nothing to do, just wait all module are Ope
+            Ret_e = RC_OK;
             break;
         }
         case STATE_CYCLIC_PREOPE:
@@ -500,6 +501,7 @@ t_eReturnCode FMKIO_Cyclic(void)
         }
         case STATE_CYCLIC_ERROR:
         {
+            Ret_e = RC_OK;
             break;
         }
         case STATE_CYCLIC_BUSY:
@@ -507,6 +509,7 @@ t_eReturnCode FMKIO_Cyclic(void)
             Ret_e = RC_OK;
             break;
     }
+
     return Ret_e;
 }
 
@@ -691,7 +694,7 @@ t_eReturnCode FMKIO_Set_InFreqSigCfg(   t_eFMKIO_InFreqSig f_signal_e,
  * FMKIO_Set_InEncoderSigCfg
  *********************************/
 t_eReturnCode FMKIO_Set_InEncoderSigCfg(t_eFMKIO_InEcdrSignals f_InEncdr_e,
-                                        t_sFMKIO_EncoderCfg f_encdrCfg_s,
+                                        t_sFMKIO_SigEcdrCfg f_encdrCfg_s,
                                         t_eFMKIO_EcdrStartOpe f_startOpe)
 {
     t_eReturnCode Ret_e = RC_OK;
@@ -1231,6 +1234,7 @@ t_eReturnCode FMKIO_Set_OutPwmSigDutyCycle(t_eFMKIO_OutPwmSig f_signal_e, t_uint
             //---- if the dutycycle doesn't change from before enable fast task nothing to do ----//
             if(g_fastTaskPwmStatus_b == (t_bool)False)
             {
+                g_fastTaskPwmStatus_b = True;
                 Ret_e = APPSYS_SetFastTaskState(APPSYS_MODULE_FMK_IO,
                                                 APPSYS_FAST_TASK_ENABLE);
                 if(Ret_e == RC_OK)
@@ -1295,6 +1299,7 @@ t_eReturnCode FMKIO_Set_OutPwmSigFrequency(t_eFMKIO_OutPwmSig f_signal_e, t_uint
             //---- if the dutycycle doesn't change from before enable fast task nothing to do ----//
             if(g_fastTaskPwmStatus_b == (t_bool)False)
             {
+                g_fastTaskPwmStatus_b = True;
                 Ret_e = APPSYS_SetFastTaskState(APPSYS_MODULE_FMK_IO,
                                                 APPSYS_FAST_TASK_ENABLE);
                 if(Ret_e == RC_OK)
@@ -1397,6 +1402,7 @@ t_eReturnCode FMKIO_Set_OutPwmSigPulses(t_eFMKIO_OutPwmSig f_signal_e,
             && (reqFastTaskON_b == (t_bool)True)
             && (g_fastTaskPwmStatus_b == (t_bool)False))
             {
+                g_fastTaskPwmStatus_b = True;
                 Ret_e = APPSYS_SetFastTaskState(APPSYS_MODULE_FMK_IO,
                                                 APPSYS_FAST_TASK_ENABLE);
             }
@@ -1978,6 +1984,11 @@ static t_eReturnCode s_FMKIO_PreOperational(void)
 
             //---- Activate Fast task for Encoder Managment ----//
             Ret_e = APPSYS_SetFastTaskState(APPSYS_MODULE_FMK_IO, APPSYS_FAST_TASK_ENABLE);
+
+            if(Ret_e == RC_OK)
+            {
+                g_fastTaskEcdrStatus_b = (t_bool)True;
+            }
         }
     }
 
@@ -2094,7 +2105,7 @@ static t_eReturnCode s_FMKIO_PerformDiagnostic(void)
 static t_eReturnCode s_FMKIO_SigFreqCalibOpe(void)
 {
     static t_bool s_performFreqLogic_b = True;
-    t_eReturnCode Ret_e;
+    t_eReturnCode Ret_e = RC_OK;
     t_uint8 idxFreq_u8;
     t_uint32 multiplierFreq_u32;
     t_eFMKTIM_InterruptLineIO freqLine_e;
@@ -2213,7 +2224,7 @@ static t_eReturnCode s_FMKIO_Get_EcdrTimerMode(t_eFMKIO_EcdrStartOpe f_StartOpeM
  *********************************/
 static void s_FMKIO_FastTask(void)
 {
-    t_eReturnCode Ret_e;
+    t_eReturnCode Ret_e = RC_OK;
     t_bool stopFastTask_b = (t_bool)True;
     
     if(g_fastTaskPwmStatus_b == (t_bool)True)
@@ -2229,6 +2240,10 @@ static void s_FMKIO_FastTask(void)
     if(Ret_e != RC_OK)
     {
         ASSERT((t_uint16)Ret_e);
+    }
+    if(stopFastTask_b == (t_bool)True)
+    {
+        Ret_e = APPSYS_SetFastTaskState(APPSYS_MODULE_FMK_IO, APPSYS_FAST_TASK_DISABLE);
     }
 
     return;
@@ -2316,15 +2331,16 @@ static t_eReturnCode s_FMKIO_FastTask_PwmMngmt(void)
  *********************************/
 static t_eReturnCode s_FMKIO_FastTask_EcdrMngmt(void)
 {
-    t_eReturnCode Ret_e;
+    t_eReturnCode Ret_e = RC_OK;
     t_uint8 idxEcdr_u8;
     t_sFMKIO_InEcdrSigInfo ecdrSigCfg_s;
     t_uint32 hwDirection_u32;
+    t_sint32 halfRange_s32;
     t_uint32 currPosition_u32;
     t_sint32 Sodelta_s32;
 
     for(idxEcdr_u8 = (t_uint8)0 ; 
-    (idxEcdr_u8 < FMKIO_SIGTYPE_INPUT_ECDR)
+    (idxEcdr_u8 < FMKIO_INPUT_ENCODER_NB)
     && (Ret_e == RC_OK) ; 
     idxEcdr_u8++)
     {
@@ -2344,44 +2360,59 @@ static t_eReturnCode s_FMKIO_FastTask_EcdrMngmt(void)
             if(hwDirection_u32 == (t_uint32)0x01)
             {
                 ecdrSigCfg_s.direction_e = FMKIO_ENCODER_DIR_FORWARD;
-
-                if(currPosition_u32 >= ecdrSigCfg_s.lastPos_u32)
-                {
-                    Sodelta_s32 = (t_sint32)(currPosition_u32 - ecdrSigCfg_s.lastPos_u32);
-                }
-                else 
-                {
-                    Sodelta_s32 = (t_sint32)((FMKIO_ECDR_ARR_VALUE + 1) + currPosition_u32 - ecdrSigCfg_s.lastPos_u32);
-                }
             }
-            else
+            else 
             {
                 ecdrSigCfg_s.direction_e = FMKIO_ENCODER_DIR_BACKWARD;
-                
-                if(currPosition_u32 <= ecdrSigCfg_s.lastPos_u32)
-                {
-                    Sodelta_s32 = (t_sint32)(ecdrSigCfg_s.lastPos_u32 - currPosition_u32);
-                }
-                else
-                {
-                    Sodelta_s32 = (t_sint32)((FMKIO_ECDR_ARR_VALUE + 1) + ecdrSigCfg_s.lastPos_u32 - currPosition_u32);
-                }
-                //---- delta is negative 
-                Sodelta_s32 = -Sodelta_s32;
+            }
+            
+            Sodelta_s32 = (t_sint32)(currPosition_u32 - ecdrSigCfg_s.lastPos_u32);
+            halfRange_s32 = ((FMKIO_ECDR_ARR_VALUE + 1) / 2);
+
+            if(Sodelta_s32 > halfRange_s32)
+            {
+                Sodelta_s32 -= (FMKIO_ECDR_ARR_VALUE + 1);
+            }
+            else if (Sodelta_s32 < -halfRange_s32)
+            {
+                Sodelta_s32 += (FMKIO_ECDR_ARR_VALUE + 1);
+            }           
+             
+            //---- update sofware variable ----//
+            // in 
+            ecdrSigCfg_s.SoPosition_f32 += 
+                ((t_float32)((t_float32)Sodelta_s32) 
+                * CST_2PI_MRAD) 
+                / ((t_float32)ecdrSigCfg_s.PPRValue_u16 * (t_float32)ecdrSigCfg_s.MPR_u8);
+              
+            if(ecdrSigCfg_s.SoPosition_f32 < 0.0f)
+            {
+                ecdrSigCfg_s.SoPosition_f32 = 0.0f;
+            }
+            else if(ecdrSigCfg_s.SoPosition_f32 > CST_2PI_MRAD)
+            {
+                ecdrSigCfg_s.SoPosition_f32 = CST_2PI_MRAD;
+            }
+            //---- speed in mmrad / sec ----//
+            //---- calculate a positive speed ----//
+            if(Sodelta_s32 < (t_sint32)0)
+            {
+                Sodelta_s32 *= (t_sint32)(-1);
             }
 
-            //---- update sofware variable ----//
-            ecdrSigCfg_s.SoPosition_f32 = (t_float32)(ecdrSigCfg_s.calibOffset_u32 
-                                                        + ecdrSigCfg_s.SoPosition_f32 
-                                                        + Sodelta_s32);
-
-            //---- speed in mmrad / sec ----//
             ecdrSigCfg_s.SoSpeed_f32 = ((t_float32)Sodelta_s32 * (1000.0f / ((t_float32)APPSYS_ELASPED_TIME_FASTTASK))) / 
                                         ((t_float32)ecdrSigCfg_s.PPRValue_u16 * (t_float32)ecdrSigCfg_s.MPR_u8);
-            ecdrSigCfg_s.SoSpeed_f32 *= 1000.0f;
+            ecdrSigCfg_s.SoSpeed_f32 *= (t_float32)1000.0f;
 
             //---- save current encoder position ----//
             ecdrSigCfg_s.lastPos_u32 = currPosition_u32;
+
+            Ret_e = SMB_Write(&g_sfmb_EcdrInfo_as[idxEcdr_u8], &ecdrSigCfg_s);
+
+            if(Ret_e != RC_OK)
+            {
+                ASSERT((t_uint32)Ret_e);
+            }
         }
     }
 

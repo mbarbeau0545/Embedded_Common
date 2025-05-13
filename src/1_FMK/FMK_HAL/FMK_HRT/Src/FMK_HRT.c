@@ -170,7 +170,6 @@ typedef union
 /**< Module State */
 static t_eCyclicModState g_FmkHrtModState_e = STATE_CYCLIC_CFG;
 
-
 /* CAUTION : Automatic generated code section for Variables: Start */
 /**< High Resolution Timer information variable */
 static t_sFMKHRT_HrTimInfo g_HrTimInfo_as[FMKHRT_HIGH_RES_TIMER_NB] = {

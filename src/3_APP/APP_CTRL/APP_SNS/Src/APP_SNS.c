@@ -46,7 +46,7 @@ typedef struct
 {
     t_eAPPSNS_SensorState * state_pe;      /**< State of the sensors */
     t_float32 snsValues_f32;            /**< For Debug Purpose */
-    t_bool isConfigured_b
+    t_bool isConfigured_b;
 } t_sAPPSNS_SnsInfo;
 // ********************************************************************
 // *                      Prototypes
@@ -260,7 +260,7 @@ t_eReturnCode APPSNS_Init(void)
         //---- set default value ----//
         g_SnsInfo_as[idxSns_u8].isConfigured_b = (t_bool)False;
         g_SnsInfo_as[idxSns_u8].snsValues_f32 = (t_float32)0.0f;
-        g_SnsInfo_as[idxSns_u8].state_pe = (&g_SnsDrvState_ae[idxSns_u8]);
+        g_SnsInfo_as[idxSns_u8].state_pe = (&g_snsState_ae[idxSns_u8]);
     }
     //---- driver init -----//
     for(LLDRV_u8 = (t_uint8)0; (LLDRV_u8 < APPSNS_DRIVER_NB) && (Ret_e == RC_OK) ; LLDRV_u8++)

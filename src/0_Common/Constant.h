@@ -16,6 +16,7 @@
     #define CST_MAX_UINT_16BIT      ((t_uint32)0xFFFF)              // Max Number 32 bits
     #define CST_MAX_UINT_32BIT      ((t_uint32)0xFFFFFFFF)          // Max Number 16 bits
     #define CST_MSEC_TO_SEC         ((t_uint32)1000)
+    #define CST_2PI_MRAD            ((t_float32)6283.185)
     #ifndef M_PI
         #define M_PI ((t_float32)3.14159265358979323846)
     #endif

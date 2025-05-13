@@ -383,9 +383,9 @@ static t_eReturnCode s_APPUDS_ConfigurationState(void)
     SrlCfg_s.hwCfg_s.wordLenght_e = FMKSRL_LINE_WORDLEN_8BITS,
 
     SrlCfg_s.CfgSpec_u.uartCfg_s.hwFlowCtrl_e = FMKSRL_UART_HW_FLOW_CTRL_NONE;
-    SrlCfg_s.CfgSpec_u.uartCfg_s.Type_e = FMKSRL_UART_TYPECFG_UART,
+    SrlCfg_s.CfgSpec_u.uartCfg_s.Type_e = FMKSRL_UART_TYPECFG_UART;
 
-    Ret_e = FMKSRL_InitDrv( APPUDS_SERIAL_LINE,
+    /*Ret_e = FMKSRL_InitDrv( APPUDS_SERIAL_LINE,
                             SrlCfg_s,
                             s_APPUDS_ClientRcvCallback,
                             (t_cbFMKSRL_TransmitMsgEvent *)NULL_FUNCTION);
@@ -394,7 +394,7 @@ static t_eReturnCode s_APPUDS_ConfigurationState(void)
         Ret_e = FMKSRL_ConfigureReception(  APPUDS_SERIAL_LINE,
                                             FMKSRL_OPE_RX_CYCLIC_SIZE,
                                             APPUDS_CLIENT_INFO_MAX_LEN);
-    }
+    }*/
         
     return Ret_e;
 }
