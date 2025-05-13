@@ -117,12 +117,13 @@
     /**
     * @brief  Enum for encoder value type
     */
-   typedef enum 
-   {
-       FMKIO_ECDR_MEAS_LAST,       /**< Get the last Raw Value from Position or Direction Buffer*/
-       FMKIO_ECDR_MEAS_MEAN,       /**< Get the Mean Value from Position or Direction Buffer */
-       FMKIO_ECDR_MEAS_NB,
-   } t_eFMKIO_EcdrMeas;
+    typedef enum 
+    {
+        FMKIO_ECDR_MEAS_POS_RAW,         /**< Get the Raw Position Value from Register */
+        FMKIO_ECDR_MEAS_POS_RAD,         /**< Get the the position value in radian */
+        FMKIO_ECDR_MEAS_POS_DEGREE,      /**< Get the the position value in degree */
+        FMKIO_ECDR_MEAS_POS_MM,          /**< Get the the position value in mm  */
+    } t_eFMKIO_EcdrPosMeas;
 
     /**
     * @brief  Enum for Encoder Mode
@@ -147,6 +148,16 @@
         FMKIO_ENCODER_DIR_NB,
     } t_eFMKIO_EcdrDir;
 
+    /**
+    * @brief  Enum for Encoder Position Format
+    */
+    typedef enum 
+    {
+        FMKIO_ECDR_VAL_FORMAT_MRADIAN = 0U,     /**< Encoder Position given in mradian */
+        FMKIO_ECDR_VAL_FORMAT_MDEGREE,          /**< Encoder Position given in mdegree */
+
+        FMKIO_ECDR_VAL_FORMAT_NB
+    } t_eFMKIO_EcdrValFormat;
     enum 
     {
         FMKIO_ANALOG_SC_DETECTED = 0x0U,
@@ -186,7 +197,14 @@
     /**
      * @brief @ref t_sFMKIO_SigEcdrCfg
      */
-    typedef t_sFMKTIM_EcdrCfg t_sFMKIO_SigEcdrCfg;
+    typedef struct 
+    {
+        t_sFMKTIM_EcdrCfg hwCfg_s;              /**< Timer Encoder configuration */
+        t_uint16 PulsePerRev_u16;        /**< Encoder resolution */
+        t_eFMKIO_PullMode pullMode_e;
+        t_eFMKIO_SpdMode speedMode_e;
+        t_uint8 MultipleTourPerRev_u8;      /**< How many encoder tour means one tour for you */
+    } t_sFMKIO_EncoderCfg;
     //-----------------------------TYPEDEF TYPES---------------------------//
     /**
     *
@@ -385,12 +403,9 @@
     *               the right register. IT & DMA are used to get sample of position & direction which is not useful in 
     *               embeded system (I suppose).\n
     *
-    *	@param[in]      f_InEncdr_e                 : the encoder input, value from @ref t_eFMKIO_InEcdrSignals
-    *	@param[in]      f_PulsePerRevolution_u32    : Motor pulse per revolution (see datasheet of your motor)
-    *	@param[in]      f_HwEcdrCfg_s               : Structure for encoder timer configuration
-    *	@param[in]      f_pull_e                    : the input pull mode for both pins, value from @ref t_eFMKIO_PullMode
-    *	@param[in]      f_spd_e                     : the input pull mode for both pins, value from @ref t_eFMKIO_SpdMode
-    *	@param[in]      f_startOpe                  : Start operation mode, enum value from @ref t_eFMKIO_EcdrStartOpe
+    *	@param[in]      f_InEncdr_e             : the encoder input, value from @ref t_eFMKIO_InEcdrSignals
+    *	@param[in]      f_encdrCfg_s            : Structure for encoder configuration 
+    *	@param[in]      f_startOpe              : Encoder Start Operation @ref t_eFMKIO_EcdrStartOpe
     *	 
     *   @retval RC_OK                             @ref RC_OK
     *   @retval RC_ERROR_PARAM_INVALID            @ref RC_ERROR_PARAM_INVALID
@@ -398,11 +413,22 @@
     *
     */
     t_eReturnCode FMKIO_Set_InEncoderSigCfg(t_eFMKIO_InEcdrSignals f_InEncdr_e,
-                                            t_uint32 f_PulsePerRevolution_u32,
-                                            t_sFMKIO_SigEcdrCfg f_HwEcdrCfg_s,
-                                            t_eFMKIO_PullMode f_pull_e,
-                                            t_eFMKIO_SpdMode f_spd_e,
+                                            t_sFMKIO_EncoderCfg f_encdrCfg_s,
                                             t_eFMKIO_EcdrStartOpe f_startOpe);
+    
+    /**
+    *
+    *	@brief      Set the calibration value for an encoder (Relative 0 )
+    *
+    *	@param[in]      f_InEncdr_e             : the encoder input, value from @ref t_eFMKIO_InEcdrSignals
+    *	@param[in]      f_calibValue_u32        : Calibration value
+    *	 
+    *   @retval RC_OK                             @ref RC_OK
+    *   @retval RC_ERROR_PARAM_INVALID            @ref RC_ERROR_PARAM_INVALID
+    *   @retval RC_ERROR_ALREADY_CONFIGURED       @ref RC_ERROR_ALREADY_CONFIGURED
+    *
+    */
+    t_eReturnCode FMKIO_Set_InEcdrCalibOffset(t_eFMKIO_InEcdrSignals f_InEncdr_e, t_uint32 f_calibValue_u32);
     /**
     *
     *	@brief      Set an output in PWM configuration.\n
@@ -528,7 +554,25 @@
     *   @retval RC_ERROR_BUSY                     @ref RC_ERROR_BUSY
     *
     */
-    t_eReturnCode FMKIO_Get_InEcdrPositionValue(t_eFMKIO_InEcdrSignals f_signal_e, t_uint32 *f_value_pu32);
+    t_eReturnCode FMKIO_Get_InEcdrPositionValue(t_eFMKIO_InEcdrSignals f_signal_e, 
+                                                t_eFMKIO_EcdrValFormat f_format_e,
+                                                t_float32 *f_value_pf32);
+
+    /**
+    *
+    *	@brief      Set the calibration value for an encoder (Relative 0 )
+    *
+    *	@param[in]      f_InEncdr_e             : the encoder input, value from @ref t_eFMKIO_InEcdrSignals
+    *	@param[in]      f_calibValue_u32        : Calibration value
+    *	 
+    *   @retval RC_OK                             @ref RC_OK
+    *   @retval RC_ERROR_PARAM_INVALID            @ref RC_ERROR_PARAM_INVALID
+    *   @retval RC_ERROR_ALREADY_CONFIGURED       @ref RC_ERROR_ALREADY_CONFIGURED
+    *
+    */
+    t_eReturnCode FMKIO_Get_InEcdrSpeed(t_eFMKIO_InEcdrSignals f_InEncdr_e, 
+                                        t_eFMKIO_EcdrValFormat f_speedFormat_e,
+                                        t_float32 * f_ecdrSpeed_pf32);
     /**
     *
     *	@brief      Get the digital input.\n

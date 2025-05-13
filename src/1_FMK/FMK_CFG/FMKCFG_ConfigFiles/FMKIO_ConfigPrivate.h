@@ -28,6 +28,10 @@
     #define FMKIO_TIME_BTWN_DIAG_MS ((t_uint16)2000)  /**< Time between diagnostic for timer and channel in cyclic ope mode*/
 
     #define FMKIO_FREQ_MIN_CC_VALUE ((t_uint32)1000) /**< Min Value to considered, we cann compute a frequency upon */
+    /**
+     * @brief ARR value for timer in Encoder Mode
+     */
+    #define FMKIO_ECDR_ARR_VALUE ((t_uint32)(0xFFFF - 1))
     // ********************************************************************
     // *                      Types
     // ********************************************************************

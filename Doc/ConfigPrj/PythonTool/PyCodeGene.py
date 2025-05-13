@@ -265,7 +265,7 @@ class LoadConfig_FromExcel():
             rc_enum += "    " + str(f_root_enum).upper() + "_" + str(element).upper()
             if(idx == 0):
                 # set the value to the first enum
-                rc_enum += f" = {str(hex(f_first_val))},"
+                rc_enum += f" = {str(int(f_first_val))},"
             else:
                 rc_enum +=  ","
             if make_desc_b:
