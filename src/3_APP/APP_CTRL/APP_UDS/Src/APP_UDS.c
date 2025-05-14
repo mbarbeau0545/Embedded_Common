@@ -56,7 +56,10 @@
 #define APPUDS_ID_FIRST_FRAME_DATA_4        ((t_uint8)0x1E)
 #define APPUDS_ID_FIRST_FRAME_DATA_5        ((t_uint8)0x1F)
 #define APPUDS_ID_FIRST_FRAME_DATA_6        ((t_uint8)0x2A)
-
+/**
+ * @brief Max Data Len
+ */
+#define APPUDS_MAX_CLIENT_REQ_FAILED        ((t_uint8)3)
 // ********************************************************************
 // *                      Types
 // ********************************************************************
@@ -131,6 +134,7 @@ typedef enum
     APPUDS_SERVER_ERROR_FIRST_FRAME,
     APPUDS_SERVER_ERROR_TIMEOUT,
     APPUDS_SERVER_FRAME_RQST_ERROR,
+    APPUDS_SERVER_ABORT_COM,
     APPUDS_SERVER_ERROR_NB,
 } t_eAPPUDS_ServerError;
 /* CAUTION : Automatic generated code section for Structure: Start */
@@ -584,6 +588,7 @@ static t_eReturnCode s_APPUDS_ClientConnectedMngmt(void)
     t_eReturnCode Ret_e = RC_OK;
     t_eReturnCode subRet_e = RC_OK;
     t_uint8 computeCrc_u8;
+    static t_uint8 s_clientFailedReq_u8 = (t_uint8)0;
     static t_uint32 s_maskClientOpe_u32 = (t_uint32)0;
     static t_eAPPUDS_FsmClientCoState s_FsmClientCoState_e = APPUDS_FSM_CLIENTCO_WAIT_REQUEST;
 
@@ -615,16 +620,28 @@ static t_eReturnCode s_APPUDS_ClientConnectedMngmt(void)
                         subRet_e = s_APPUDS_SendEcuRqstResponse(True);
                         if(subRet_e == RC_OK)
                         {
+                            s_clientFailedReq_u8 = (t_uint8)0;
                             s_FsmClientCoState_e = APPUDS_FSM_CLIENTCO_PROCESS_REQUEST;
                         }
                     }
                     else 
                     {
-                        subRet_e = s_APPUDS_SendErrorMngmt(APPUDS_SERVER_FRAME_RQST_ERROR);
-                        if(subRet_e == RC_OK)
+                        if(s_clientFailedReq_u8 < APPUDS_MAX_CLIENT_REQ_FAILED)
                         {
-                            Ret_e = RC_WARNING_WRONG_RESULT;
-                            g_reqClientCo_b = False;
+                            s_clientFailedReq_u8++;
+                            subRet_e = s_APPUDS_SendErrorMngmt(APPUDS_SERVER_ERROR_CRC);
+                            Ret_e = subRet_e;
+                        }
+                        else 
+                        {
+                            s_clientFailedReq_u8 = (t_uint8)0;
+                            subRet_e = s_APPUDS_SendErrorMngmt(APPUDS_SERVER_ABORT_COM);
+
+                            if(subRet_e == RC_OK)
+                            {
+                                Ret_e = RC_WARNING_WRONG_RESULT;
+                                g_reqClientCo_b = False;
+                            }
                         }
                     }
                     RESETBIT_8B(g_flagReception_u8, APPUDS_BIT_RX_INFO_NEW_DATA);
