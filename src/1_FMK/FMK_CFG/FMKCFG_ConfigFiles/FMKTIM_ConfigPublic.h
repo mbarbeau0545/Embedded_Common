@@ -73,7 +73,7 @@
     */
     typedef enum
     {
-        FMKTIM_INTERRUPT_LINE_IO_11 = 0x0,                 /**< General Purpose Timer, Reference to Timer 1 Channel 1 */
+        FMKTIM_INTERRUPT_LINE_IO_11 = 0,                 /**< General Purpose Timer, Reference to Timer 1 Channel 1 */
         FMKTIM_INTERRUPT_LINE_IO_12,                       /**< General Purpose Timer, Reference to Timer 1 Channel 2 */
         FMKTIM_INTERRUPT_LINE_IO_13,                       /**< General Purpose Timer, Reference to Timer 1 Channel 3 */
         FMKTIM_INTERRUPT_LINE_IO_14,                       /**< General Purpose Timer, Reference to Timer 1 Channel 4 */
@@ -114,7 +114,7 @@
     */
     typedef enum
     {
-        FMKTIM_INTERRUPT_LINE_EVNT_1 = 0x0,                  /**< Event Purpose Timer, Reference to Timer 6 Channel 1 */
+        FMKTIM_INTERRUPT_LINE_EVNT_1 = 0,                  /**< Event Purpose Timer, Reference to Timer 6 Channel 1 */
         FMKTIM_INTERRUPT_LINE_EVNT_2,                        /**< Event Purpose Timer, Reference to Timer 7 Channel 1 */
     
         FMKTIM_INTERRUPT_LINE_EVNT_NB,

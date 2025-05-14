@@ -21,8 +21,8 @@ from PyCodeGene import LoadConfig_FromExcel as LCFE, TARGET_T_END_LINE,TARGET_T_
 #------------------------------------------------------------------------------
 #                                       CONSTANT
 #------------------------------------------------------------------------------
-APPSPM_CFG_PRIVATE = 'src\\3_APP\APP_CFG\\ConfigFiles\\APPSPM_ConfigPrivate.h'
-APPSPM_CFG_PUBLIC = 'src\\3_APP\APP_CFG\\ConfigFiles\\APPSPM_ConfigPublic.h'
+APPSPM_CFG_PRIVATE = 'Src\\3_APP\APP_CFG\\ConfigFiles\\APPSPM_ConfigPrivate.h'
+APPSPM_CFG_PUBLIC = 'Src\\3_APP\APP_CFG\\ConfigFiles\\APPSPM_ConfigPublic.h'
 APPSPM_ENUM_ROOT_PARAM= "APPSPM_PRM"
 
 TARGET_T_DIAG_STRAT_DECL_START_LINE = "    /* CAUTION : Automatic generated code section for Diag Strategy Function Declaration: Start */\n"

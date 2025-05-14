@@ -72,7 +72,7 @@ class AppSdm_CodeGen():
         #-----------------------------make all enum-----------------------
         #-----------------------------------------------------------------
         enum_item += "    /**\n" + "    * @brief Enum Diagnostic Item\n" + "    */\n"\
-                    + "    typedef enum ____t_eAPPSDM_DiagnosticItem\n"\
+                    + "    typedef enum\n"\
                     + "    {\n"
         var_item_info += "    /**\n" + "    * @brief Diagnostic Item Configuration\n" + "    */\n"\
                     + f'    t_sAPPSM_DiagItemCfg c_AppSdm_DiagItemCfg_as[{APPSDM_ENUM_ROOT_DIAG_ITEM}_NB] =' + '{\n'\

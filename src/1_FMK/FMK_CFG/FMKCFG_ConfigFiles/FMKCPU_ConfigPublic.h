@@ -130,7 +130,7 @@
     */
     typedef enum
     {
-        FMKCPU_SYS_CLOCK_HSE = 0x0,                /**< Reference to Hardware Bus HSE */
+        FMKCPU_SYS_CLOCK_HSE = 0,                /**< Reference to Hardware Bus HSE */
         FMKCPU_SYS_CLOCK_HSI,                      /**< Reference to Hardware Bus HSI */
         FMKCPU_SYS_CLOCK_SYSTEM,                   /**< Reference to Hardware Bus SYSTEM */
         FMKCPU_SYS_CLOCK_HCLK1,                    /**< Reference to Hardware Bus HCLK1 */
@@ -149,7 +149,7 @@
     */
     typedef enum
     {
-        FMKCPU_RCC_CLK_DMA1 = 0x0,               /**< Reference to RCC Clock DMA1 */
+        FMKCPU_RCC_CLK_DMA1 = 0,               /**< Reference to RCC Clock DMA1 */
         FMKCPU_RCC_CLK_DMA2,                     /**< Reference to RCC Clock DMA2 */
         FMKCPU_RCC_CLK_DMAMUX1,                  /**< Reference to RCC Clock DMAMUX1 */
         FMKCPU_RCC_CLK_CORDIC,                   /**< Reference to RCC Clock CORDIC */
@@ -215,7 +215,7 @@
     */
     typedef enum
     {
-        FMKCPU_NVIC_WWDG_IRQN = 0x0,          /**< Reference to HAL nvic WWDG_IRQn */
+        FMKCPU_NVIC_WWDG_IRQN = 0,          /**< Reference to HAL nvic WWDG_IRQn */
         FMKCPU_NVIC_PVD_PVM_IRQN,             /**< Reference to HAL nvic PVD_PVM_IRQn */
         FMKCPU_NVIC_RTC_TAMP_LSECSS_IRQN,     /**< Reference to HAL nvic RTC_TAMP_LSECSS_IRQn */
         FMKCPU_NVIC_RTC_WKUP_IRQN,            /**< Reference to HAL nvic RTC_WKUP_IRQn */
@@ -325,7 +325,7 @@
     */
     typedef enum
     {
-        FMKCPU_DMA_RQSTYPE_ADC1 = 0x0,               /**< Reference to Bsp Dma Request for ADC1 */
+        FMKCPU_DMA_RQSTYPE_ADC1 = 0,               /**< Reference to Bsp Dma Request for ADC1 */
         FMKCPU_DMA_RQSTYPE_ADC2,                     /**< Reference to Bsp Dma Request for ADC2 */
         FMKCPU_DMA_RQSTYPE_ADC3,                     /**< Reference to Bsp Dma Request for ADC3 */
         FMKCPU_DMA_RQSTYPE_ADC4,                     /**< Reference to Bsp Dma Request for ADC4 */
@@ -346,7 +346,7 @@
     */
     typedef enum
     {
-        FMKCPU_DMA_CTRL_1 = 0x0,                  /**< Reference to DMA 1 */
+        FMKCPU_DMA_CTRL_1 = 0,                  /**< Reference to DMA 1 */
         FMKCPU_DMA_CTRL_2,                        /**< Reference to DMA 2 */
     
         FMKCPU_DMA_CTRL_NB,
@@ -357,7 +357,7 @@
     */
     typedef enum
     {
-        FMKCPU_DMA_CHANNEL_1 = 0x0,                  /**< Reference to Channel 1 */
+        FMKCPU_DMA_CHANNEL_1 = 0,                  /**< Reference to Channel 1 */
         FMKCPU_DMA_CHANNEL_2,                        /**< Reference to Channel 2 */
         FMKCPU_DMA_CHANNEL_3,                        /**< Reference to Channel 3 */
         FMKCPU_DMA_CHANNEL_4,                        /**< Reference to Channel 4 */
@@ -374,7 +374,7 @@
     */
     typedef enum
     {
-        FMKCPU_DMA_MUX_1 = 0x0,                  /**< Reference to DMAMUX 1 */
+        FMKCPU_DMA_MUX_1 = 0,                  /**< Reference to DMAMUX 1 */
     
         FMKCPU_DMA_MUX_NB,
     } t_eFMKCPU_DmaMux;

@@ -41,7 +41,7 @@
     */
     typedef enum
     {
-        FMKHRT_HIGH_RES_TIMER_1 = 0x0,                  /**< Timer Resolution  0 */
+        FMKHRT_HIGH_RES_TIMER_1 = 0,                  /**< Timer Resolution  0 */
     
         FMKHRT_HIGH_RES_TIMER_NB,
     } t_eFMKHRT_HighResIstc;
@@ -51,7 +51,7 @@
     */
     typedef enum
     {
-        FMKHRT_HRTIM_SLAVE_1 = 0x0,                  /**< Timer Slave A */
+        FMKHRT_HRTIM_SLAVE_1 = 0,                  /**< Timer Slave A */
         FMKHRT_HRTIM_SLAVE_2,                        /**< Timer Slave B */
         FMKHRT_HRTIM_SLAVE_3,                        /**< Timer Slave C */
         FMKHRT_HRTIM_SLAVE_4,                        /**< Timer Slave D */
@@ -66,7 +66,7 @@
     */
     typedef enum
     {
-        FMKHRT_HRTIM_CHANNEL_1 = 0x0,                  /**< Channel 1 */
+        FMKHRT_HRTIM_CHANNEL_1 = 0,                  /**< Channel 1 */
         FMKHRT_HRTIM_CHANNEL_2,                        /**< Channel 2 */
     
         FMKHRT_HRTIM_CHANNEL_NB,

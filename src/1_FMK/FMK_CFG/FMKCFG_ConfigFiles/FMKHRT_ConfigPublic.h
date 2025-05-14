@@ -93,7 +93,7 @@
     */
     typedef enum
     {
-        FMKHRT_HR_LINE_1 = 0x0,                  /**< Reference to HRTIM1, Timer Slave A, Channel 1 */
+        FMKHRT_HR_LINE_1 = 0,                  /**< Reference to HRTIM1, Timer Slave A, Channel 1 */
         FMKHRT_HR_LINE_2,                        /**< Reference to HRTIM1, Timer Slave A, Channel 2 */
         FMKHRT_HR_LINE_3,                        /**< Reference to HRTIM1, Timer Slave B, Channel 1 */
         FMKHRT_HR_LINE_4,                        /**< Reference to HRTIM1, Timer Slave B, Channel 2 */

@@ -38,7 +38,7 @@
     */
     typedef enum
     {
-        FMKSRL_SERIAL_LINE_1 = 0x0,                  /**< Reference to Hardware Instance USART1 */
+        FMKSRL_SERIAL_LINE_1 = 0,                  /**< Reference to Hardware Instance USART1 */
         FMKSRL_SERIAL_LINE_2,                        /**< Reference to Hardware Instance USART2 */
         FMKSRL_SERIAL_LINE_3,                        /**< Reference to Hardware Instance USART3 */
         FMKSRL_SERIAL_LINE_4,                        /**< Reference to Hardware Instance UART4 */

@@ -58,7 +58,7 @@
     */
     typedef enum
     {
-        FMKTIM_TIMER_1 = 0x0,                  /**< Reference for HAL timer_1, this timer has 4 channel(s) */
+        FMKTIM_TIMER_1 = 0,                  /**< Reference for HAL timer_1, this timer has 4 channel(s) */
         FMKTIM_TIMER_2,                        /**< Reference for HAL timer_2, this timer has 4 channel(s) */
         FMKTIM_TIMER_3,                        /**< Reference for HAL timer_3, this timer has 4 channel(s) */
         FMKTIM_TIMER_4,                        /**< Reference for HAL timer_4, this timer has 4 channel(s) */

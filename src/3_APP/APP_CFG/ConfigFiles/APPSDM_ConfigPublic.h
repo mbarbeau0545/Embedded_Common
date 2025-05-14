@@ -26,7 +26,7 @@
     /**
     * @brief Enum Diagnostic Item
     */
-    typedef enum ____t_eAPPSDM_DiagnosticItem
+    typedef enum
     {
         APPSDM_DIAG_ITEM_FMK_CFG_ERROR = 0x00,// None
         APPSDM_DIAG_ITEM_FMK_OPE_ERROR,// None
